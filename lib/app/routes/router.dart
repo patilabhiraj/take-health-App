@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:take_health/features/home/presentation/main_screen.dart';
 
 import '../../core/utils/app_logger.dart';
-import '../../features/auth/bloc/auth_bloc.dart';
-import '../../features/auth/bloc/forgot_password_bloc.dart';
-import '../../features/auth/presentation/email_verification_page.dart';
-import '../../features/auth/presentation/forgot_password_page.dart';
-import '../../features/auth/presentation/login_page.dart';
-import '../../features/auth/presentation/register_page.dart';
-import '../../features/auth/presentation/splash_page.dart';
+import '../../features/Auth/bloc/auth_bloc.dart';
+import '../../features/Auth/bloc/forgot_password_bloc.dart';
+import '../../features/Auth/presentation/email_verification_page.dart';
+import '../../features/Auth/presentation/forgot_password_page.dart';
+import '../../features/Auth/presentation/login_page.dart';
+import '../../features/Auth/presentation/register_page.dart';
+import '../../features/Auth/presentation/splash_page.dart';
 import '../injection.dart' show sl;
 
 class AppRouter {

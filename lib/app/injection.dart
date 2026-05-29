@@ -2,22 +2,23 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 
 import '../core/network/api_client.dart';
-import '../features/auth/bloc/auth_bloc.dart';
-import '../features/auth/bloc/forgot_password_bloc.dart';
-import '../features/auth/bloc/splash_bloc.dart';
-import '../features/auth/data/datasources/auth_local_data_source.dart';
-import '../features/auth/data/datasources/auth_remote_data_source.dart';
-import '../features/auth/data/repositories/auth_repository_impl.dart';
-import '../features/auth/domain/repositories/auth_repository.dart';
-import '../features/auth/domain/usecases/forgot_password_usecase.dart';
-import '../features/auth/domain/usecases/get_cached_user_usecase.dart';
-import '../features/auth/domain/usecases/google_login_usecase.dart';
-import '../features/auth/domain/usecases/login_usecase.dart';
-import '../features/auth/domain/usecases/logout_usecase.dart';
-import '../features/auth/domain/usecases/register_usecase.dart';
-import '../features/auth/domain/usecases/resend_email_otp_usecase.dart';
-import '../features/auth/domain/usecases/reset_password_usecase.dart';
-import '../features/auth/domain/usecases/verify_email_otp_usecase.dart';
+import '../core/theme/theme_cubit.dart';
+import '../features/Auth/bloc/auth_bloc.dart';
+import '../features/Auth/bloc/forgot_password_bloc.dart';
+import '../features/Auth/bloc/splash_bloc.dart';
+import '../features/Auth/data/datasources/auth_local_data_source.dart';
+import '../features/Auth/data/datasources/auth_remote_data_source.dart';
+import '../features/Auth/data/repositories/auth_repository_impl.dart';
+import '../features/Auth/domain/repositories/auth_repository.dart';
+import '../features/Auth/domain/usecases/forgot_password_usecase.dart';
+import '../features/Auth/domain/usecases/get_cached_user_usecase.dart';
+import '../features/Auth/domain/usecases/google_login_usecase.dart';
+import '../features/Auth/domain/usecases/login_usecase.dart';
+import '../features/Auth/domain/usecases/logout_usecase.dart';
+import '../features/Auth/domain/usecases/register_usecase.dart';
+import '../features/Auth/domain/usecases/resend_email_otp_usecase.dart';
+import '../features/Auth/domain/usecases/reset_password_usecase.dart';
+import '../features/Auth/domain/usecases/verify_email_otp_usecase.dart';
 
 final sl = GetIt.instance;
 
@@ -25,6 +26,7 @@ void init() {
   // ── Core & External ───────────────────────────────────────────────────────────
   sl.registerLazySingleton(() => ApiClient());
   sl.registerLazySingleton(() => const FlutterSecureStorage());
+  sl.registerLazySingleton(() => ThemeCubit());
 
   // ── Data Sources ──────────────────────────────────────────────────────────────
   sl.registerLazySingleton<AuthLocalDataSource>(

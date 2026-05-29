@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_health/core/theme/app_colors.dart';
 
 class CarePlanCard extends StatefulWidget {
   final List<CarePlanTask> tasks;
@@ -28,15 +29,18 @@ class _CarePlanCardState extends State<CarePlanCard> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: cs.outline.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
+            color: context.cShadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -54,22 +58,22 @@ class _CarePlanCardState extends State<CarePlanCard> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color(0xffE8F5E9),
+                      color: context.cPrimarySurface,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(
                       Icons.description_outlined,
-                      color: const Color(0xff5D8B74),
+                      color: cs.primary,
                       size: 20,
                     ),
                   ),
                   const SizedBox(width: 12),
-                  const Text(
+                  Text(
                     'Care Plan',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: cs.onSurface,
                     ),
                   ),
                 ],
@@ -79,7 +83,7 @@ class _CarePlanCardState extends State<CarePlanCard> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.grey[400],
+                  color: cs.onSurfaceVariant,
                 ),
               ),
             ],
@@ -106,19 +110,19 @@ class _CarePlanCardState extends State<CarePlanCard> {
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: _taskStates[index]
-                              ? const Color(0xff5D8B74)
-                              : Colors.grey[300]!,
+                              ? cs.primary
+                              : cs.outline,
                           width: 2,
                         ),
                         color: _taskStates[index]
-                            ? const Color(0xff5D8B74)
+                            ? cs.primary
                             : Colors.transparent,
                       ),
                       child: _taskStates[index]
-                          ? const Icon(
+                          ? Icon(
                               Icons.check,
                               size: 16,
-                              color: Colors.white,
+                              color: cs.onPrimary,
                             )
                           : null,
                     ),
@@ -131,8 +135,8 @@ class _CarePlanCardState extends State<CarePlanCard> {
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: _taskStates[index]
-                            ? Colors.grey[400]
-                            : Colors.black87,
+                            ? cs.onSurfaceVariant
+                            : cs.onSurface,
                         decoration: _taskStates[index]
                             ? TextDecoration.lineThrough
                             : TextDecoration.none,
@@ -151,7 +155,7 @@ class _CarePlanCardState extends State<CarePlanCard> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
-              color: const Color(0xffFBF8F2),
+              color: context.cWarmSurface,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Text(
@@ -160,7 +164,7 @@ class _CarePlanCardState extends State<CarePlanCard> {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Colors.grey[600],
+                color: cs.onSurfaceVariant,
                 letterSpacing: 0.5,
               ),
             ),

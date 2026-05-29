@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_health/core/theme/app_colors.dart';
 
 class CaloriesCard extends StatelessWidget {
   final int currentCalories;
@@ -20,16 +21,18 @@ class CaloriesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: Colors.grey.shade300),
+        border: Border.all(color: cs.outline),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: context.cShadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -38,18 +41,19 @@ class CaloriesCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             "Calories",
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
+              color: cs.onSurface,
             ),
           ),
           const SizedBox(height: 2),
-          const Text(
+          Text(
             "DAILY TRACKING",
             style: TextStyle(
-              color: Colors.grey,
+              color: cs.onSurfaceVariant,
               fontWeight: FontWeight.w600,
               fontSize: 10,
               letterSpacing: 1,
@@ -61,16 +65,17 @@ class CaloriesCard extends StatelessWidget {
               children: [
                 Text(
                   "$currentCalories",
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
+                    color: cs.onSurface,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   "OF $targetCalories",
-                  style: const TextStyle(
-                    color: Colors.grey,
+                  style: TextStyle(
+                    color: cs.onSurfaceVariant,
                     fontSize: 9,
                     fontWeight: FontWeight.w600,
                   ),
@@ -82,7 +87,7 @@ class CaloriesCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
             decoration: BoxDecoration(
-              color: const Color(0xffFBF8F2),
+              color: context.cWarmSurface,
               borderRadius: BorderRadius.circular(14),
             ),
             child: Row(
@@ -90,19 +95,19 @@ class CaloriesCard extends StatelessWidget {
               children: [
                 NutrientItem(
                   icon: Icons.water_drop_outlined,
-                  iconColor: Colors.redAccent,
+                  iconColor: AppColors.protein,
                   value: "${protein}g",
                   label: "PROTEIN",
                 ),
                 NutrientItem(
                   icon: Icons.favorite_border,
-                  iconColor: Colors.blue,
+                  iconColor: AppColors.carbs,
                   value: "${carbs}g",
                   label: "CARBS",
                 ),
                 NutrientItem(
                   icon: Icons.sentiment_satisfied_alt,
-                  iconColor: Colors.green,
+                  iconColor: AppColors.fats,
                   value: "${fats}g",
                   label: "FATS",
                 ),
@@ -114,7 +119,7 @@ class CaloriesCard extends StatelessWidget {
           const SizedBox(height: 10),
           GestureDetector(
             onTap: onViewDetails,
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -122,7 +127,7 @@ class CaloriesCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: cs.onSurface,
                   ),
                 ),
                 Row(
@@ -130,16 +135,16 @@ class CaloriesCard extends StatelessWidget {
                     Text(
                       "View Details",
                       style: TextStyle(
-                        color: Color(0xff5D8B74),
+                        color: cs.primary,
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
                       ),
                     ),
-                    SizedBox(width: 2),
+                    const SizedBox(width: 2),
                     Icon(
                       Icons.arrow_forward_ios,
                       size: 10,
-                      color: Color(0xff5D8B74),
+                      color: cs.primary,
                     ),
                   ],
                 ),
@@ -168,6 +173,8 @@ class NutrientItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Row(
       children: [
         Icon(icon, color: iconColor, size: 16),
@@ -177,15 +184,16 @@ class NutrientItem extends StatelessWidget {
           children: [
             Text(
               value,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 13,
+                color: cs.onSurface,
               ),
             ),
             Text(
               label,
-              style: const TextStyle(
-                color: Colors.grey,
+              style: TextStyle(
+                color: cs.onSurfaceVariant,
                 fontSize: 7,
               ),
             ),

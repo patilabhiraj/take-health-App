@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_health/core/theme/app_colors.dart';
 
 class StepCounterCard extends StatelessWidget {
   final int stepsToday;
@@ -18,17 +19,20 @@ class StepCounterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: cs.surface,
           borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: cs.outline.withValues(alpha: 0.5)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
+              color: context.cShadow,
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -46,12 +50,12 @@ class StepCounterCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xffE3F2FD),
+                        color: context.cInfo.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
                         Icons.show_chart,
-                        color: Colors.blue[700],
+                        color: context.cInfo,
                         size: 24,
                       ),
                     ),
@@ -64,17 +68,17 @@ class StepCounterCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey[500],
+                            color: cs.onSurfaceVariant,
                             letterSpacing: 0.5,
                           ),
                         ),
                         const SizedBox(height: 2),
-                        const Text(
+                        Text(
                           'STEP COUNTER',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: cs.onSurface,
                           ),
                         ),
                       ],
@@ -87,14 +91,14 @@ class StepCounterCard extends StatelessWidget {
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: Colors.green[400],
+                        color: context.cSuccess,
                         shape: BoxShape.circle,
                       ),
                     ),
                     const SizedBox(width: 8),
                     Icon(
                       Icons.chevron_right,
-                      color: Colors.grey[400],
+                      color: cs.onSurfaceVariant,
                       size: 24,
                     ),
                   ],
@@ -110,16 +114,16 @@ class StepCounterCard extends StatelessWidget {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: cs.inverseSurface,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
                     child: Text(
                       stepsToday.toString(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: cs.onInverseSurface,
                       ),
                     ),
                   ),
@@ -130,7 +134,7 @@ class StepCounterCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey[400],
+                    color: cs.onSurfaceVariant,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -142,14 +146,14 @@ class StepCounterCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xffFBF8F2),
+                color: context.cWarmSurface,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Row(
                 children: [
                   Icon(
                     Icons.local_fire_department,
-                    color: Colors.orange[600],
+                    color: context.cWarning,
                     size: 24,
                   ),
                   const SizedBox(width: 12),
@@ -165,7 +169,7 @@ class StepCounterCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.orange[600],
+                                color: context.cWarning,
                               ),
                             ),
                             Text(
@@ -173,7 +177,7 @@ class StepCounterCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.grey[500],
+                                color: cs.onSurfaceVariant,
                               ),
                             ),
                           ],
@@ -183,9 +187,9 @@ class StepCounterCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           child: LinearProgressIndicator(
                             value: _progress,
-                            backgroundColor: Colors.grey[300],
+                            backgroundColor: cs.outline,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.orange[600]!,
+                              context.cWarning,
                             ),
                             minHeight: 8,
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_health/core/theme/app_colors.dart';
 
 class HabitCard extends StatelessWidget {
   final String title;
@@ -26,17 +27,20 @@ class HabitCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: cs.surface,
           borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: cs.outline.withValues(alpha: 0.5)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.03),
+              color: context.cShadow,
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
@@ -72,17 +76,17 @@ class HabitCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
-                            color: Colors.grey[500],
+                            color: cs.onSurfaceVariant,
                             letterSpacing: 0.5,
                           ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: cs.onSurface,
                           ),
                         ),
                       ],
@@ -91,7 +95,7 @@ class HabitCard extends StatelessWidget {
                 ),
                 Icon(
                   Icons.chevron_right,
-                  color: Colors.grey[400],
+                  color: cs.onSurfaceVariant,
                   size: 24,
                 ),
               ],
@@ -105,16 +109,16 @@ class HabitCard extends StatelessWidget {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: cs.inverseSurface,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       '0',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: cs.onInverseSurface,
                       ),
                     ),
                   ),
@@ -126,7 +130,7 @@ class HabitCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey[400],
+                      color: cs.onSurfaceVariant,
                       letterSpacing: 0.3,
                     ),
                   ),
@@ -140,7 +144,7 @@ class HabitCard extends StatelessWidget {
                 description!,
                 style: TextStyle(
                   fontSize: 13,
-                  color: Colors.grey[600],
+                  color: cs.onSurfaceVariant,
                 ),
               ),
             ],
@@ -163,8 +167,8 @@ class SmokeLogCard extends StatelessWidget {
       title: 'SMOKE LOG',
       subtitle: 'HABIT',
       icon: Icons.air,
-      iconBackgroundColor: const Color(0xffE8F5E9),
-      iconColor: const Color(0xff5D8B74),
+      iconBackgroundColor: context.cPrimarySurface,
+      iconColor: Theme.of(context).colorScheme.primary,
       statusText: 'SMOKE FREE TODAY',
       statusEmoji: '🌿',
       description: 'Log daily to see your trend',
@@ -184,8 +188,8 @@ class DrinkLogCard extends StatelessWidget {
       title: 'DRINK LOG',
       subtitle: 'AWARENESS',
       icon: Icons.local_drink_outlined,
-      iconBackgroundColor: const Color(0xffE3F2FD),
-      iconColor: Colors.blue,
+      iconBackgroundColor: context.cInfo.withValues(alpha: 0.1),
+      iconColor: context.cInfo,
       statusText: 'NONE LOGGED TODAY',
       description: 'Tap to start logging',
       onTap: onTap,

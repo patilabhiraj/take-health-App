@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:take_health/features/ai_chat/ai_chat_page.dart';
+import 'package:take_health/features/Ai_chat/ai_chat_page.dart';
 import 'widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {

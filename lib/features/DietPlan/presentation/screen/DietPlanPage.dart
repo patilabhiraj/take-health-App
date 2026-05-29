@@ -5,28 +5,31 @@ class DietPlanPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final cs = Theme.of(context).colorScheme;
+
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             Icons.apple_outlined,
             size: 80,
-            color: Color(0xff5D8B74),
+            color: cs.primary,
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             'Personalized Diet Plan',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
+              color: cs.onSurface,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             'Coming Soon',
             style: TextStyle(
-              color: Colors.grey,
+              color: cs.onSurfaceVariant,
               fontSize: 16,
             ),
           ),

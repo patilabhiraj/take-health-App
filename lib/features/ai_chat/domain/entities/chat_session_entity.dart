@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:take_health/features/ai_chat/domain/entities/chat_message_entity.dart';
+import 'package:take_health/features/Ai_chat/domain/entities/chat_message_entity.dart';
 
 class ChatSessionEntity extends Equatable {
   final String id;

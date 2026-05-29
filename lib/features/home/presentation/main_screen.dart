@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:take_health/core/theme/app_colors.dart';
+import 'package:take_health/core/theme/theme_cubit.dart';
 import 'package:take_health/features/DietPlan/presentation/screen/DietPlanPage.dart';
 import 'package:take_health/features/NutritionPage/presentation/screen/NutritionPage.dart';
 import 'package:take_health/features/ReportsPage/presentation/screen/ReportsPage.dart';
-import '../../auth/bloc/auth_bloc.dart';
+import 'package:take_health/features/profile/presentation/screen/profile_page.dart';
+import '../../Auth/bloc/auth_bloc.dart';
 import 'home_page.dart';
 
 class MainScreen extends StatefulWidget {
@@ -44,9 +47,11 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xffF5F5F5),
-      appBar: _buildCommonAppBar(),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: _buildCommonAppBar(cs),
       body: IndexedStack(
         index: _currentIndex,
         children: _pages,
@@ -55,27 +60,31 @@ class _MainScreenState extends State<MainScreen> {
         onPressed: () {
           // Add meal/nutrition logging
         },
-        backgroundColor: const Color(0xff5D8B74),
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildBottomNavigationBar(),
+      bottomNavigationBar: _buildBottomNavigationBar(cs),
     );
   }
 
-  PreferredSizeWidget _buildCommonAppBar() {
+  PreferredSizeWidget _buildCommonAppBar(ColorScheme cs) {
+    if (_currentIndex == 1) return _buildNutritionAppBar(cs);
     return AppBar(
-      backgroundColor: const Color(0xffF5F5F5),
-      elevation: 0,
       title: Row(
         children: [
-          const CircleAvatar(
-            backgroundColor: Color(0xff5D8B74),
-            child: Text(
-              'P',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+          GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ProfilePage()),
+            ),
+            child: CircleAvatar(
+              backgroundColor: cs.primary,
+              child: Text(
+                'P',
+                style: TextStyle(
+                  color: cs.onPrimary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -83,10 +92,10 @@ class _MainScreenState extends State<MainScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Hello patil!',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: cs.onSurface,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -94,7 +103,7 @@ class _MainScreenState extends State<MainScreen> {
               Text(
                 'Good morning',
                 style: TextStyle(
-                  color: const Color(0xff5D8B74),
+                  color: cs.primary,
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
@@ -105,58 +114,135 @@ class _MainScreenState extends State<MainScreen> {
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.notifications_outlined, color: Colors.black),
-          onPressed: () {
-            // Handle notifications
-          },
+          icon: Icon(Icons.notifications_outlined, color: cs.onSurface),
+          onPressed: () {},
         ),
         PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert, color: Colors.black),
+          icon: Icon(Icons.more_vert, color: cs.onSurface),
           onSelected: (value) {
             if (value == 'logout') {
               _showLogoutDialog();
+            } else if (value == 'toggle_theme') {
+              context.read<ThemeCubit>().toggleTheme();
+            } else if (value == 'profile') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfilePage()),
+              );
             }
           },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'profile',
-              child: Row(
-                children: [
-                  Icon(Icons.person_outline, size: 20),
-                  SizedBox(width: 12),
-                  Text('Profile'),
-                ],
+          itemBuilder: (context) {
+            final isDark = context.read<ThemeCubit>().isDark;
+            return [
+              const PopupMenuItem(
+                value: 'profile',
+                child: Row(
+                  children: [
+                    Icon(Icons.person_outline, size: 20),
+                    SizedBox(width: 12),
+                    Text('Profile'),
+                  ],
+                ),
               ),
-            ),
-            const PopupMenuItem(
-              value: 'settings',
-              child: Row(
-                children: [
-                  Icon(Icons.settings_outlined, size: 20),
-                  SizedBox(width: 12),
-                  Text('Settings'),
-                ],
+              const PopupMenuItem(
+                value: 'settings',
+                child: Row(
+                  children: [
+                    Icon(Icons.settings_outlined, size: 20),
+                    SizedBox(width: 12),
+                    Text('Settings'),
+                  ],
+                ),
               ),
-            ),
-            const PopupMenuItem(
-              value: 'logout',
-              child: Row(
-                children: [
-                  Icon(Icons.logout, size: 20, color: Colors.red),
-                  SizedBox(width: 12),
-                  Text('Logout', style: TextStyle(color: Colors.red)),
-                ],
+              PopupMenuItem(
+                value: 'toggle_theme',
+                child: Row(
+                  children: [
+                    Icon(
+                      isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    Text(isDark ? 'Light Mode' : 'Dark Mode'),
+                  ],
+                ),
               ),
-            ),
-          ],
+              PopupMenuItem(
+                value: 'logout',
+                child: Row(
+                  children: [
+                    Icon(Icons.logout, size: 20, color: cs.error),
+                    const SizedBox(width: 12),
+                    Text('Logout', style: TextStyle(color: cs.error)),
+                  ],
+                ),
+              ),
+            ];
+          },
         ),
       ],
     );
   }
 
-  Widget _buildBottomNavigationBar() {
+  PreferredSizeWidget _buildNutritionAppBar(ColorScheme cs) {
+    return AppBar(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      titleSpacing: 16,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Nutrition Tracker',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: cs.onSurface,
+            ),
+          ),
+          Text(
+            'Achieve wellness goals..',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: cs.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton.icon(
+          onPressed: () {},
+          icon: const Icon(Icons.add, size: 15),
+          label: const Text('Log Meal'),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.white,
+            backgroundColor: cs.primary,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20)),
+            textStyle: const TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w600),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.camera_alt_outlined, color: cs.onSurface, size: 22),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.mic_outlined, color: cs.onSurface, size: 22),
+          onPressed: () {},
+          padding: const EdgeInsets.only(right: 8),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBottomNavigationBar(ColorScheme cs) {
     return BottomAppBar(
-      color: const Color.fromARGB(255, 214, 233, 216),
       shape: const CircularNotchedRectangle(),
       notchMargin: 8,
       child: SizedBox(
@@ -209,14 +295,14 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           Icon(
             isActive ? activeIcon : icon,
-            color: isActive ? const Color(0xff5D8B74) : Colors.grey,
+            color: isActive ? context.cNavBarActive : context.cNavBarInactive,
             size: 24,
           ),
           const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
-              color: isActive ? const Color(0xff5D8B74) : Colors.grey,
+              color: isActive ? context.cNavBarActive : context.cNavBarInactive,
               fontSize: 11,
               fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
             ),
@@ -227,6 +313,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _showLogoutDialog() {
+    final cs = Theme.of(context).colorScheme;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -242,9 +329,9 @@ class _MainScreenState extends State<MainScreen> {
               Navigator.pop(ctx);
               context.read<AuthBloc>().add(AuthLogoutRequested());
             },
-            child: const Text(
+            child: Text(
               'Logout',
-              style: TextStyle(color: Colors.red),
+              style: TextStyle(color: cs.error),
             ),
           ),
         ],
@@ -252,6 +339,3 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
-
-
-

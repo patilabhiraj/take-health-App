@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import '../../app/injection.dart';
-import '../../features/auth/data/datasources/auth_local_data_source.dart';
+import '../../features/Auth/data/datasources/auth_local_data_source.dart';
 import '../constants/api_constants.dart';
 
 class ApiClient {

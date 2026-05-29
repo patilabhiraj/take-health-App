@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_health/core/theme/app_colors.dart';
 
 class NutritionDeficiencyCard extends StatelessWidget {
   final VoidCallback? onUploadReport;
@@ -12,15 +13,18 @@ class NutritionDeficiencyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: cs.outline.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: context.cShadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -37,16 +41,16 @@ class NutritionDeficiencyCard extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.science_outlined,
-                    color: const Color(0xff5D8B74),
+                    color: cs.primary,
                     size: 22,
                   ),
                   const SizedBox(width: 10),
-                  const Text(
+                  Text(
                     'Nutrition Deficiency',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: cs.onSurface,
                     ),
                   ),
                 ],
@@ -63,7 +67,7 @@ class NutritionDeficiencyCard extends StatelessWidget {
                     Text(
                       'DETAILED',
                       style: TextStyle(
-                        color: const Color(0xff5D8B74),
+                        color: cs.primary,
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
@@ -72,7 +76,7 @@ class NutritionDeficiencyCard extends StatelessWidget {
                     const SizedBox(width: 4),
                     Icon(
                       Icons.arrow_forward,
-                      color: const Color(0xff5D8B74),
+                      color: cs.primary,
                       size: 14,
                     ),
                   ],
@@ -87,7 +91,7 @@ class NutritionDeficiencyCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 50),
             decoration: BoxDecoration(
-              color: const Color(0xffFBF8F2),
+              color: context.cWarmSurface,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
@@ -96,12 +100,12 @@ class NutritionDeficiencyCard extends StatelessWidget {
                   width: 70,
                   height: 70,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: cs.surface,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.description_outlined,
-                    color: Colors.grey[400],
+                    color: cs.onSurfaceVariant,
                     size: 32,
                   ),
                 ),
@@ -111,7 +115,7 @@ class NutritionDeficiencyCard extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: cs.onSurfaceVariant,
                     height: 1.6,
                     letterSpacing: 0.3,
                   ),

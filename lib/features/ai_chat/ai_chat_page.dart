@@ -186,11 +186,12 @@ class _AiChatPageState extends State<AiChatPage> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) {
+        final cs = Theme.of(context).colorScheme;
         return Container(
           height: MediaQuery.of(context).size.height * 0.92,
-          decoration: const BoxDecoration(
-            color: Color(0xFFF5F5F7),
-            borderRadius: BorderRadius.vertical(
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(30),
             ),
           ),
@@ -206,12 +207,12 @@ class _AiChatPageState extends State<AiChatPage> {
                      width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: cs.inverseSurface,
                         borderRadius: BorderRadius.circular(18),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.history,
-                        color: Colors.white,
+                        color: cs.onInverseSurface,
                         size: 17,
                       ),
                     ),
@@ -233,7 +234,7 @@ class _AiChatPageState extends State<AiChatPage> {
                       child: Icon(
                         Icons.close,
                         size: 32,
-                        color: Colors.grey.shade400,
+                        color: cs.onSurfaceVariant,
                       ),
                     ),
                   ],
@@ -250,14 +251,14 @@ class _AiChatPageState extends State<AiChatPage> {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: cs.inverseSurface,
                       borderRadius: BorderRadius.circular(28),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         '+ NEW SESSION',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: cs.onInverseSurface,
                           fontWeight: FontWeight.w900,
                           letterSpacing: 2,
                           fontSize: 15,
@@ -300,16 +301,16 @@ class _AiChatPageState extends State<AiChatPage> {
                       vertical: 34,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: cs.surface,
                       borderRadius: BorderRadius.circular(28),
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         'No recent health queries.',
                         style: TextStyle(
                           fontSize: 18,
                           fontStyle: FontStyle.italic,
-                          color: Color(0xFF6B7280),
+                          color: cs.onSurfaceVariant,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -336,7 +337,7 @@ class _AiChatPageState extends State<AiChatPage> {
                         margin: const EdgeInsets.only(bottom: 14),
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: cs.surface,
                           borderRadius: BorderRadius.circular(22),
                         ),
                         child: Row(
@@ -345,15 +346,13 @@ class _AiChatPageState extends State<AiChatPage> {
                               width: 44,
                               height: 44,
                               decoration: BoxDecoration(
-                                color: const Color(
-                                  0xFFE8F5EE,
-                                ),
+                                color: cs.primaryContainer,
                                 borderRadius:
                                 BorderRadius.circular(14),
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.chat_bubble_outline,
-                                color: Color(0xFF4A9B6E),
+                                color: cs.primary,
                               ),
                             ),
 
@@ -458,16 +457,18 @@ class _AiChatPageState extends State<AiChatPage> {
       );
     }
 
+    final cs = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
-        title: const Text(
+        title: Text(
           'AI Health Coach',
           style: TextStyle(
-            color: Colors.black,
+            color: cs.onSurface,
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -609,6 +610,7 @@ class _AiMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: Row(
@@ -618,16 +620,16 @@ class _AiMessageBubble extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFFE8F5EE),
+              color: cs.primaryContainer,
               shape: BoxShape.circle,
               border: Border.all(
-                color: const Color(0xFF4A9B6E),
+                color: cs.primary,
                 width: 1.5,
               ),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.health_and_safety,
-              color: Color(0xFF4A9B6E),
+              color: cs.primary,
             ),
           ),
 
@@ -639,9 +641,9 @@ class _AiMessageBubble extends StatelessWidget {
               children: [
                 Text(
                   message.text,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
-                    color: Color(0xFF1A1A1A),
+                    color: cs.onSurface,
                     height: 1.5,
                   ),
                 ),
@@ -714,6 +716,7 @@ class _UserMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: Align(
@@ -728,14 +731,14 @@ class _UserMessageBubble extends StatelessWidget {
             vertical: 14,
           ),
           decoration: BoxDecoration(
-            color: Colors.grey.shade100,
+            color: cs.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(22),
           ),
           child: Text(
             message.text,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 15,
-              color: Color(0xFF1A1A1A),
+              color: cs.onSurfaceVariant,
             ),
           ),
         ),
@@ -802,6 +805,7 @@ class _ChatInputBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.fromLTRB(
         12,
@@ -814,10 +818,12 @@ class _ChatInputBar extends StatelessWidget {
           Expanded(
             child: TextField(
               controller: controller,
+              style: TextStyle(color: cs.onSurface),
               decoration: InputDecoration(
                 hintText: 'Ask something...',
+                hintStyle: TextStyle(color: cs.onSurfaceVariant),
                 filled: true,
-                fillColor: Colors.grey.shade100,
+                fillColor: cs.surfaceContainerHighest,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(24),
                   borderSide: BorderSide.none,
@@ -833,13 +839,13 @@ class _ChatInputBar extends StatelessWidget {
             child: Container(
               width: 52,
               height: 52,
-              decoration: const BoxDecoration(
-                color: Color(0xFF4A9B6E),
+              decoration: BoxDecoration(
+                color: cs.primary,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.send_rounded,
-                color: Colors.white,
+                color: cs.onPrimary,
               ),
             ),
           ),

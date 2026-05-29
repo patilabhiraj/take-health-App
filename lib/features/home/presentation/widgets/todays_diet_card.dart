@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_health/core/theme/app_colors.dart';
 
 class TodaysDietCard extends StatefulWidget {
   final VoidCallback? onViewFullPlan;
@@ -17,15 +18,18 @@ class _TodaysDietCardState extends State<TodaysDietCard> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: cs.outline.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: context.cShadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -38,12 +42,12 @@ class _TodaysDietCardState extends State<TodaysDietCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 "Today's Diet",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: cs.onSurface,
                 ),
               ),
               Row(
@@ -51,14 +55,14 @@ class _TodaysDietCardState extends State<TodaysDietCard> {
                   Icon(
                     Icons.calendar_today_outlined,
                     size: 16,
-                    color: Colors.grey[600],
+                    color: cs.onSurfaceVariant,
                   ),
                   const SizedBox(width: 6),
                   Text(
                     "Fri, 29 May 2026",
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey[600],
+                      color: cs.onSurfaceVariant,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -97,7 +101,7 @@ class _TodaysDietCardState extends State<TodaysDietCard> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 40),
             decoration: BoxDecoration(
-              color: const Color(0xffFBF8F2),
+              color: context.cWarmSurface,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
@@ -106,22 +110,22 @@ class _TodaysDietCardState extends State<TodaysDietCard> {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: cs.surface,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.restaurant_outlined,
-                    color: const Color(0xff5D8B74),
+                    color: cs.primary,
                     size: 28,
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'NO PLAN TODAY',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: cs.onSurface,
                   ),
                 ),
               ],
@@ -136,8 +140,8 @@ class _TodaysDietCardState extends State<TodaysDietCard> {
             child: ElevatedButton(
               onPressed: widget.onViewFullPlan,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff6BAF92),
-                foregroundColor: Colors.white,
+                backgroundColor: cs.primary,
+                foregroundColor: cs.onPrimary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -178,12 +182,14 @@ class _MealTypeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xff6BAF92) : Colors.grey[200],
+          color: isSelected ? cs.primary : cs.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
@@ -191,7 +197,7 @@ class _MealTypeChip extends StatelessWidget {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.bold,
-            color: isSelected ? Colors.white : Colors.grey[600],
+            color: isSelected ? cs.onPrimary : cs.onSurfaceVariant,
             letterSpacing: 0.5,
           ),
         ),

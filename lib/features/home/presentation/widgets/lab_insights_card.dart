@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_health/core/theme/app_colors.dart';
 
 class LabInsightsCard extends StatelessWidget {
   final VoidCallback? onUploadReport;
@@ -10,15 +11,18 @@ class LabInsightsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: cs.surface,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: cs.outline.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: context.cShadow,
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -34,12 +38,12 @@ class LabInsightsCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Lab Insights',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: cs.onSurface,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -47,7 +51,7 @@ class LabInsightsCard extends StatelessWidget {
                     'Biological markers',
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey[600],
+                      color: cs.onSurfaceVariant,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -65,7 +69,7 @@ class LabInsightsCard extends StatelessWidget {
                     Text(
                       'UPLOAD',
                       style: TextStyle(
-                        color: const Color(0xff5D8B74),
+                        color: cs.primary,
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
@@ -74,7 +78,7 @@ class LabInsightsCard extends StatelessWidget {
                     const SizedBox(width: 4),
                     Icon(
                       Icons.add,
-                      color: const Color(0xff5D8B74),
+                      color: cs.primary,
                       size: 18,
                     ),
                   ],
@@ -89,7 +93,7 @@ class LabInsightsCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 40),
             decoration: BoxDecoration(
-              color: const Color(0xffFBF8F2),
+              color: context.cWarmSurface,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
@@ -98,22 +102,22 @@ class LabInsightsCard extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: cs.surface,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.upload_file_outlined,
-                    color: const Color(0xff5D8B74),
+                    color: cs.primary,
                     size: 28,
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'NO REPORTS',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: cs.onSurface,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -122,7 +126,7 @@ class LabInsightsCard extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: cs.onSurfaceVariant,
                     height: 1.5,
                   ),
                 ),
@@ -130,8 +134,8 @@ class LabInsightsCard extends StatelessWidget {
                 ElevatedButton(
                   onPressed: onUploadReport,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff6BAF92),
-                    foregroundColor: Colors.white,
+                    backgroundColor: cs.primary,
+                    foregroundColor: cs.onPrimary,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
@@ -159,14 +163,14 @@ class LabInsightsCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xffFBF8F2),
+              color: context.cWarmSurface,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.auto_awesome_outlined,
-                  color: const Color(0xff5D8B74),
+                  color: cs.primary,
                   size: 20,
                 ),
                 const SizedBox(width: 12),
@@ -174,12 +178,12 @@ class LabInsightsCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'RECOMMENDATION',
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: cs.onSurface,
                           letterSpacing: 0.5,
                         ),
                       ),
@@ -188,7 +192,7 @@ class LabInsightsCard extends StatelessWidget {
                         'Add details to unlock tailored insights.',
                         style: TextStyle(
                           fontSize: 13,
-                          color: Colors.grey[700],
+                          color: cs.onSurfaceVariant,
                           fontStyle: FontStyle.italic,
                         ),
                       ),

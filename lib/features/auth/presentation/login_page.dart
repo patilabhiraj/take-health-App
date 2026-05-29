@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/routes/router.dart';
-import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/custom_snackbar.dart';
 import '../bloc/auth_bloc.dart';
 import 'widgets/widgets.dart';
@@ -28,8 +27,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthError) {
@@ -58,14 +59,16 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 40),
 
                   // ── Logo ────────────────────────────────────────────────────
-                  const Center(child: AuthLogo(dark: true)),
+                  Center(
+                    child: AuthLogo(dark: Theme.of(context).brightness == Brightness.light),
+                  ),
                   const SizedBox(height: 48),
 
                   // ── Title ───────────────────────────────────────────────────
-                  const Text(
+                  Text(
                     'Welcome Back',
                     style: TextStyle(
-                      color: AppColors.primary,
+                      color: cs.primary,
                       fontSize: 30,
                       fontWeight: FontWeight.w800,
                     ),
@@ -74,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     'LOGIN TO YOUR ACCOUNT',
                     style: TextStyle(
-                      color: Colors.grey[500],
+                      color: cs.onSurfaceVariant,
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.5,
@@ -114,17 +117,13 @@ class _LoginPageState extends State<LoginPage> {
                           value: _rememberMe,
                           onChanged: (v) =>
                               setState(() => _rememberMe = v ?? false),
-                          activeColor: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         'REMEMBER ME',
                         style: TextStyle(
-                          color: Colors.grey[600],
+                          color: cs.onSurfaceVariant,
                           fontSize: 11,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1,
@@ -141,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           'FORGOT PASSWORD?',
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: cs.onSurfaceVariant,
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 1,
@@ -154,9 +153,9 @@ class _LoginPageState extends State<LoginPage> {
 
                   // ── Sign In button ──────────────────────────────────────────
                   isLoading
-                      ? const Center(
+                      ? Center(
                           child: CircularProgressIndicator(
-                            color: AppColors.primary,
+                            color: cs.primary,
                           ),
                         )
                       : GradientButton(
@@ -165,11 +164,11 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             FocusScope.of(context).unfocus();
                             context.read<AuthBloc>().add(
-                              AuthLoginRequested(
-                                email: _emailCtrl.text.trim().toLowerCase(),
-                                password: _passwordCtrl.text,
-                              ),
-                            );
+                                  AuthLoginRequested(
+                                    email: _emailCtrl.text.trim().toLowerCase(),
+                                    password: _passwordCtrl.text,
+                                  ),
+                                );
                           },
                         ),
                   const SizedBox(height: 32),
@@ -178,10 +177,10 @@ class _LoginPageState extends State<LoginPage> {
                   Center(
                     child: TextButton(
                       onPressed: () => context.go(AppRouter.register),
-                      child: const Text(
+                      child: Text(
                         'CREATE ACCOUNT',
                         style: TextStyle(
-                          color: AppColors.primary,
+                          color: cs.primary,
                           fontSize: 14,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 1,

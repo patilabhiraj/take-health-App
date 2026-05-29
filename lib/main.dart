@@ -5,7 +5,7 @@ import 'app/injection.dart' as di;
 import 'app/routes/router.dart';
 import 'core/error/error_handler.dart';
 import 'core/utils/app_logger.dart';
-import 'features/auth/domain/usecases/get_cached_user_usecase.dart';
+import 'features/Auth/domain/usecases/get_cached_user_usecase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,12 +25,10 @@ void main() async {
   ]);
 
   // ── Status bar style ──────────────────────────────────────────────────────────
+  // Colors will be adapted by the ThemeCubit / MaterialApp based on theme mode.
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
 

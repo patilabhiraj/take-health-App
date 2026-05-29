@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:take_health/features/auth/domain/usecases/forgot_password_usecase.dart';
-import 'package:take_health/features/auth/domain/usecases/reset_password_usecase.dart';
+import 'package:take_health/features/Auth/domain/usecases/forgot_password_usecase.dart';
+import 'package:take_health/features/Auth/domain/usecases/reset_password_usecase.dart';
 part 'forgot_password_event.dart';
 part 'forgot_password_state.dart';
 

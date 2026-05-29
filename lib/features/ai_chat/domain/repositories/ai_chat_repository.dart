@@ -1,5 +1,5 @@
 
-import 'package:take_health/features/ai_chat/domain/entities/chat_session_entity.dart';
+import 'package:take_health/features/Ai_chat/domain/entities/chat_session_entity.dart';
 
 abstract class AiChatRepository {
   /// Load all chat sessions from local storage

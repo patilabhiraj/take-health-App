@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:take_health/features/auth/domain/entities/user_entity.dart';
-import 'package:take_health/features/auth/domain/usecases/google_login_usecase.dart';
-import 'package:take_health/features/auth/domain/usecases/login_usecase.dart';
-import 'package:take_health/features/auth/domain/usecases/logout_usecase.dart';
-import 'package:take_health/features/auth/domain/usecases/register_usecase.dart';
+import 'package:take_health/features/Auth/domain/entities/user_entity.dart';
+import 'package:take_health/features/Auth/domain/usecases/google_login_usecase.dart';
+import 'package:take_health/features/Auth/domain/usecases/login_usecase.dart';
+import 'package:take_health/features/Auth/domain/usecases/logout_usecase.dart';
+import 'package:take_health/features/Auth/domain/usecases/register_usecase.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/utils/app_logger.dart';
 
