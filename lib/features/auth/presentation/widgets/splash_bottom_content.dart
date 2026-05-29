@@ -1,0 +1,1 @@
+// Splash Bottom Content Widget

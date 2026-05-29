@@ -1,0 +1,1 @@
+// Splash Logo Widget
