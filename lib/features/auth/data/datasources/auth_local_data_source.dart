@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -5,6 +6,9 @@ abstract class AuthLocalDataSource {
   Future<void> saveToken(String token);
   Future<String?> getToken();
   Future<void> deleteToken();
+  Future<void> savePendingRegistration(Map<String, dynamic> data);
+  Future<Map<String, dynamic>?> getPendingRegistration();
+  Future<void> deletePendingRegistration();
 }
 
 class AuthLocalDataSourceImpl implements AuthLocalDataSource {
@@ -13,6 +17,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   AuthLocalDataSourceImpl({required this.secureStorage});
 
   static const String _tokenKey = 'take_health_auth_token';
+  static const String _pendingRegistrationKey = 'take_health_pending_registration';
 
   @override
   Future<void> saveToken(String token) async {
@@ -50,6 +55,35 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.remove(_tokenKey);
+    } catch (_) {}
+  }
+
+  @override
+  Future<void> savePendingRegistration(Map<String, dynamic> data) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final jsonString = jsonEncode(data);
+      await prefs.setString(_pendingRegistrationKey, jsonString);
+    } catch (_) {}
+  }
+
+  @override
+  Future<Map<String, dynamic>?> getPendingRegistration() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final jsonString = prefs.getString(_pendingRegistrationKey);
+      if (jsonString != null && jsonString.isNotEmpty) {
+        return jsonDecode(jsonString) as Map<String, dynamic>;
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  @override
+  Future<void> deletePendingRegistration() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_pendingRegistrationKey);
     } catch (_) {}
   }
 }

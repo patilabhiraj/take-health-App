@@ -46,6 +46,14 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
     String? phoneNumber,
   }) async {
+    // Save registration data first
+    final registrationData = {
+      'name': '$firstName $lastName',
+      'email': email,
+      'password': password,
+      if (phoneNumber != null) 'phone': phoneNumber,
+    };
+    
     try {
       final userModel = await remoteDataSource.register(
         firstName,
@@ -56,12 +64,37 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       if (userModel.token.isNotEmpty) {
         await localDataSource.saveToken(userModel.token);
+        await localDataSource.deletePendingRegistration();
       }
       return Right(userModel);
     } on EmailVerificationRequiredException catch (e) {
+      // Save registration data for OTP verification
+      await localDataSource.savePendingRegistration(registrationData);
       return Left(EmailVerificationFailure(e.email, e.message));
     } on DioException catch (e) {
-      return Left(ServerFailure(_dioMessage(e, 'Failed to register.')));
+      // Check if error is about verification code requirement
+      final errorMessage = _dioMessage(e, 'Failed to register.');
+      if (errorMessage.toLowerCase().contains('verification code') ||
+          errorMessage.toLowerCase().contains('verification')) {
+        // Save registration data for later use with OTP
+        await localDataSource.savePendingRegistration(registrationData);
+        
+        // Try to request OTP using different endpoints
+        try {
+          await remoteDataSource.requestRegistrationOtp(registrationData);
+        } catch (_) {
+          // If that fails, try with just email
+          try {
+            await remoteDataSource.resendEmailOtp(email);
+          } catch (_) {}
+        }
+        
+        return Left(EmailVerificationFailure(
+          email,
+          'Verification code sent to your email. Please check your inbox and spam folder.',
+        ));
+      }
+      return Left(ServerFailure(errorMessage));
     } catch (_) {
       return const Left(ServerFailure('An unexpected error occurred.'));
     }
@@ -111,7 +144,23 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> verifyEmailOtp(String email, String otp) async {
     try {
-      final userModel = await remoteDataSource.verifyEmailOtp(email, otp);
+      // Get pending registration data
+      final pendingData = await localDataSource.getPendingRegistration();
+      
+      UserModel userModel;
+      if (pendingData != null && pendingData.isNotEmpty) {
+        // Complete registration with OTP
+        userModel = await remoteDataSource.verifyEmailOtpWithRegistration(
+          pendingData,
+          otp,
+        );
+        // Clear pending registration data
+        await localDataSource.deletePendingRegistration();
+      } else {
+        // Fallback to simple OTP verification
+        userModel = await remoteDataSource.verifyEmailOtp(email, otp);
+      }
+      
       // Save token after successful OTP verification
       if (userModel.token.isNotEmpty) {
         await localDataSource.saveToken(userModel.token);
@@ -127,7 +176,17 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either<Failure, void>> resendEmailOtp(String email) async {
     try {
-      await remoteDataSource.resendEmailOtp(email);
+      // Try to get pending registration data
+      final pendingData = await localDataSource.getPendingRegistration();
+      
+      if (pendingData != null && pendingData.isNotEmpty) {
+        // Use full registration data to request OTP
+        await remoteDataSource.requestRegistrationOtp(pendingData);
+      } else {
+        // Fallback to just email
+        await remoteDataSource.resendEmailOtp(email);
+      }
+      
       return const Right(null);
     } on DioException catch (e) {
       return Left(ServerFailure(_dioMessage(e, 'Failed to resend OTP.')));

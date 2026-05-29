@@ -3,17 +3,18 @@ abstract final class ApiConstants {
   static const String baseUrl = 'https://ai-healthcare-ip89.onrender.com';
 
   // ── Auth ──────────────────────────────────────────────────────────────────────
-  static const String register         = '/auth/register';
-  static const String registerOtp      = '/auth/register-otp';
-  static const String registerDoctor   = '/auth/register/doctor';
-  static const String login            = '/auth/login';
-  static const String logout           = '/auth/logout';
-  static const String forgotPassword   = '/auth/forgot-password';
-  static const String verifyResetCode  = '/auth/verify-reset-code';
-  static const String resetPassword    = '/auth/reset-password';
-  static const String profile          = '/auth/profile';
-  static const String updateProfile    = '/auth/profile';
-  static const String uploadProfilePic = '/auth/upload-profile-picture';
+  static const String register         = '/api/auth/register';
+  static const String registerOtp      = '/api/auth/register-otp';
+  static const String requestOtp       = '/api/auth/request-otp'; // Request OTP endpoint
+  static const String registerDoctor   = '/api/auth/register/doctor';
+  static const String login            = '/api/auth/login';
+  static const String logout           = '/api/auth/logout';
+  static const String forgotPassword   = '/api/auth/forgot-password';
+  static const String verifyResetCode  = '/api/auth/verify-reset-code';
+  static const String resetPassword    = '/api/auth/reset-password';
+  static const String profile          = '/api/auth/profile';
+  static const String updateProfile    = '/api/auth/profile';
+  static const String uploadProfilePic = '/api/auth/upload-profile-picture';
 
   // ── Health Features (Future) ──────────────────────────────────────────────────
   static const String aiChat           = '/api/ai/chat';

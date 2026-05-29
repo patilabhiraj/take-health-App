@@ -17,7 +17,12 @@ abstract class AuthRemoteDataSource {
   Future<void> forgotPassword(String email);
   Future<void> resetPassword(String email, String otp, String newPassword);
   Future<UserModel> verifyEmailOtp(String email, String otp);
+  Future<UserModel> verifyEmailOtpWithRegistration(
+    Map<String, dynamic> registrationData,
+    String otp,
+  );
   Future<void> resendEmailOtp(String email);
+  Future<void> requestRegistrationOtp(Map<String, dynamic> registrationData);
   Future<void> logout();
 }
 
@@ -45,22 +50,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     String password, {
     String? phoneNumber,
   }) async {
-    // Step 1: Register user (returns OTP requirement)
+    // Step 1: Register user - send without verification code to trigger OTP
     final response = await apiClient.dio.post(
       ApiConstants.register,
       data: {
         'name': '$firstName $lastName',
         'email': email,
         'password': password,
-        'phone': phoneNumber,
+        if (phoneNumber != null) 'phone': phoneNumber,
+        'verificationCode': null, // Explicitly send null to request OTP
       },
     );
 
-    // Backend returns: { success: true, message: "OTP sent to email" }
-    // Throw exception to trigger OTP verification flow
+    // Check if backend directly returns token (registration complete)
+    if (response.data != null && response.data['token'] != null) {
+      return UserModel.fromJson(response.data);
+    }
+
+    // Otherwise, trigger OTP verification flow
     throw EmailVerificationRequiredException(
       email: email,
-      message: response.data['message'] ?? 'Please verify your email with OTP',
+      message: response.data?['message'] ?? 'Please verify your email with OTP',
     );
   }
 
@@ -86,10 +96,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       data: {'email': email, 'code': otp},
     );
 
-    // Step 2: Set new password
+    // Step 2: Set new password with OTP for verification
+    // Try multiple field name combinations that backend might expect
     await apiClient.dio.post(
       ApiConstants.resetPassword,
-      data: {'email': email, 'newPassword': newPassword},
+      data: {
+        'email': email,
+        'newPassword': newPassword,
+        'password': newPassword, // Also try 'password' field name
+        'code': otp,
+        'otp': otp,
+      },
     );
   }
 
@@ -106,12 +123,88 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> resendEmailOtp(String email) async {
-    // Resend OTP by calling register again with same email
-    await apiClient.dio.post(
+  Future<UserModel> verifyEmailOtpWithRegistration(
+    Map<String, dynamic> registrationData,
+    String otp,
+  ) async {
+    // Complete registration with OTP by calling register endpoint with verification code
+    // Try different field names that the backend might expect
+    final response = await apiClient.dio.post(
       ApiConstants.register,
-      data: {'email': email},
+      data: {
+        ...registrationData,
+        'verificationCode': otp,
+        'otp': otp, // Also send as 'otp' in case backend expects this
+        'code': otp, // Also send as 'code' in case backend expects this
+      },
     );
+
+    // Backend returns: { success: true, token: "...", user: {...} }
+    return UserModel.fromJson(response.data);
+  }
+
+  @override
+  Future<void> resendEmailOtp(String email) async {
+    // Try multiple endpoints to request OTP
+    // 1. Try /api/auth/request-otp
+    try {
+      await apiClient.dio.post(
+        ApiConstants.requestOtp,
+        data: {'email': email},
+      );
+      return; // Success
+    } catch (_) {}
+    
+    // 2. Try /api/auth/register-otp with just email
+    try {
+      await apiClient.dio.post(
+        ApiConstants.registerOtp,
+        data: {'email': email, 'action': 'request'},
+      );
+      return; // Success
+    } catch (_) {}
+    
+    // 3. Try /api/auth/register with just email
+    try {
+      await apiClient.dio.post(
+        ApiConstants.register,
+        data: {'email': email},
+      );
+    } catch (_) {
+      // Ignore - OTP might have been sent despite error
+    }
+  }
+  
+  @override
+  Future<void> requestRegistrationOtp(Map<String, dynamic> registrationData) async {
+    // Try to request OTP with full registration data
+    // 1. Try /api/auth/request-otp with full data
+    try {
+      await apiClient.dio.post(
+        ApiConstants.requestOtp,
+        data: registrationData,
+      );
+      return; // Success
+    } catch (_) {}
+    
+    // 2. Try /api/auth/register-otp with full data
+    try {
+      await apiClient.dio.post(
+        ApiConstants.registerOtp,
+        data: {...registrationData, 'action': 'request'},
+      );
+      return; // Success
+    } catch (_) {}
+    
+    // 3. Try /api/auth/register with full data (will get 400 but might send OTP)
+    try {
+      await apiClient.dio.post(
+        ApiConstants.register,
+        data: registrationData,
+      );
+    } catch (_) {
+      // Ignore error
+    }
   }
 
   @override

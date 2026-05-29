@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../domain/usecases/get_cached_user_usecase.dart';
+import 'package:take_health/features/auth/domain/usecases/get_cached_user_usecase.dart';
 
 part 'splash_event.dart';
 part 'splash_state.dart';

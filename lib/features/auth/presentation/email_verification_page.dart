@@ -19,25 +19,9 @@ class EmailVerificationPage extends StatefulWidget {
 }
 
 class _EmailVerificationPageState extends State<EmailVerificationPage> {
-  final List<TextEditingController> _otpControllers =
-      List.generate(6, (_) => TextEditingController());
-  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
-
+  String _otpCode = '';
   bool _isVerifying = false;
   bool _isResending = false;
-
-  @override
-  void dispose() {
-    for (var c in _otpControllers) {
-      c.dispose();
-    }
-    for (var f in _focusNodes) {
-      f.dispose();
-    }
-    super.dispose();
-  }
-
-  String get _otpCode => _otpControllers.map((c) => c.text).join();
 
   Future<void> _verifyOtp() async {
     if (_otpCode.length != 6) {
@@ -162,8 +146,13 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
               // ── OTP Input ───────────────────────────────────────────────────
               OtpInputField(
                 length: 6,
-                onChanged: (_) {},
-                onCompleted: (_) => _verifyOtp(),
+                onChanged: (code) {
+                  setState(() => _otpCode = code);
+                },
+                onCompleted: (code) {
+                  setState(() => _otpCode = code);
+                  _verifyOtp();
+                },
               ),
               const SizedBox(height: 32),
 

@@ -312,7 +312,7 @@ class _OtpStepState extends State<_OtpStep> {
           ),
           const SizedBox(height: 24),
           Text(
-            'We sent a 6-digit code to\n${widget.email.isEmpty ? 'your email' : widget.email}',
+            'We sent a 4-digit code to\n${widget.email.isEmpty ? 'your email' : widget.email}',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.grey[600],
@@ -322,7 +322,7 @@ class _OtpStepState extends State<_OtpStep> {
           ),
           const SizedBox(height: 28),
           OtpInputField(
-            length: 6,
+            length: 4,
             onChanged: (val) => setState(() => _otp = val),
             onCompleted: (val) => setState(() => _otp = val),
           ),

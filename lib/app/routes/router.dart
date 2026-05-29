@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:take_health/features/home/presentation/main_screen.dart';
 
 import '../../core/utils/app_logger.dart';
 import '../../features/auth/bloc/auth_bloc.dart';
@@ -10,7 +11,6 @@ import '../../features/auth/presentation/forgot_password_page.dart';
 import '../../features/auth/presentation/login_page.dart';
 import '../../features/auth/presentation/register_page.dart';
 import '../../features/auth/presentation/splash_page.dart';
-import '../../features/home/presentation/home_page.dart';
 import '../injection.dart' show sl;
 
 class AppRouter {
@@ -64,26 +64,10 @@ class AppRouter {
           path: home,
           builder: (context, state) => BlocProvider.value(
             value: sl<AuthBloc>(),
-            child: const HomePage(),
+            child: const MainScreen(),
           ),
         ),
       ],
-    );
-  }
-}
-
-class _HomePlaceholder extends StatelessWidget {
-  const _HomePlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Home - Coming Soon',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
     );
   }
 }

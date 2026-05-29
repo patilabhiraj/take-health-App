@@ -1,11 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/errors/failures.dart';
-import '../../../core/utils/app_logger.dart';
-import '../domain/entities/user_entity.dart';
-import '../domain/usecases/google_login_usecase.dart';
-import '../domain/usecases/login_usecase.dart';
-import '../domain/usecases/logout_usecase.dart';
-import '../domain/usecases/register_usecase.dart';
+import 'package:take_health/features/auth/domain/entities/user_entity.dart';
+import 'package:take_health/features/auth/domain/usecases/google_login_usecase.dart';
+import 'package:take_health/features/auth/domain/usecases/login_usecase.dart';
+import 'package:take_health/features/auth/domain/usecases/logout_usecase.dart';
+import 'package:take_health/features/auth/domain/usecases/register_usecase.dart';
+import '../../../../core/errors/failures.dart';
+import '../../../../core/utils/app_logger.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
