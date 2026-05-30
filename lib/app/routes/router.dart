@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:take_health/features/home/presentation/main_screen.dart';
+import 'package:take_health/features/home/presentation/widgets/quickLogSheet.dart';
 
 import '../../core/utils/app_logger.dart';
 import '../../features/Auth/bloc/auth_bloc.dart';
@@ -66,6 +67,13 @@ class AppRouter {
             child: const MainScreen(),
           ),
         ),
+        // GoRoute(
+        //   path: home,
+        //   builder: (context, state) => BlocProvider.value(
+        //     value: sl<AuthBloc>(),
+        //     child: const QuickLogSheet(),
+        //   ),
+        // ),
       ],
     );
   }

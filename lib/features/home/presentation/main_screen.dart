@@ -5,10 +5,10 @@ import 'package:take_health/core/theme/theme_cubit.dart';
 import 'package:take_health/features/DietPlan/presentation/screen/DietPlanPage.dart';
 import 'package:take_health/features/NutritionPage/presentation/screen/NutritionPage.dart';
 import 'package:take_health/features/ReportsPage/presentation/screen/ReportsPage.dart';
-import 'package:take_health/features/ai_chat/presentation/screen/ai_chat_page.dart';
 import 'package:take_health/features/Profile/presentation/bloc/profile_bloc.dart';
 import 'package:take_health/features/Profile/presentation/bloc/profile_state.dart';
 import 'package:take_health/features/Profile/presentation/screen/profile_page.dart';
+import 'package:take_health/features/home/presentation/widgets/quickLogSheet.dart';
 import '../../Auth/bloc/auth_bloc.dart';
 import 'home_page.dart';
 
@@ -60,9 +60,9 @@ class _MainScreenState extends State<MainScreen> {
         children: _pages,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context, AiChatPage.route()),
-        tooltip: 'AI Health Coach',
-        child: const Icon(Icons.chat_bubble_outline_rounded),
+        onPressed: _showQuickLogSheet,
+        tooltip: 'Quick Log',
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _buildBottomNavigationBar(cs),
@@ -297,6 +297,31 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  void _showQuickLogSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: QuickLogSheet(
+            onAddMealTap: _handleAddMealTap,
+          ),
+        );
+      },
+    );
+  }
+
+  void _handleAddMealTap() {
+    Navigator.of(context).pop();
+    setState(() {
+      _currentIndex = 1;
+    });
   }
 
   Widget _buildNavItem({
