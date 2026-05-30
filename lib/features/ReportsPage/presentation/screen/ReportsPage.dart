@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take_health/features/ai_chat/presentation/screen/ai_chat_page.dart';
 import '../widgets/reports_archives_card.dart';
 import '../widgets/reports_comparative_card.dart';
 import '../widgets/reports_header_section.dart';
@@ -103,7 +104,7 @@ class _ReportsPageState extends State<ReportsPage> {
               _FloatingButton(
                 icon: Icons.chat_bubble_outline_rounded,
                 color: cs.primary,
-                onTap: () {},
+                onTap: () => Navigator.push(context, AiChatPage.route()),
               ),
             ],
           ),

@@ -1,16 +1,14 @@
-
-import 'package:take_health/features/Ai_chat/domain/entities/chat_session_entity.dart';
+import '../entities/chat_message.dart';
 
 abstract class AiChatRepository {
-  /// Load all chat sessions from local storage
-  Future<List<ChatSessionEntity>> loadSessions();
+  Future<String> sendMessage({
+    required String query,
+    required List<ChatMessage> conversationHistory,
+  });
 
-  /// Save all chat sessions to local storage
-  Future<void> saveSessions(List<ChatSessionEntity> sessions);
+  Future<List<ChatMessage>> getChatHistory();
 
-  /// Clear all chat sessions
-  Future<void> clearSessions();
+  Future<void> saveChatHistory(List<ChatMessage> messages);
 
-  /// Generate AI response based on user input
-  Future<String> generateResponse(String userInput);
+  Future<void> clearChatHistory();
 }

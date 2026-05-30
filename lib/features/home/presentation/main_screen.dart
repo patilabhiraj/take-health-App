@@ -5,7 +5,10 @@ import 'package:take_health/core/theme/theme_cubit.dart';
 import 'package:take_health/features/DietPlan/presentation/screen/DietPlanPage.dart';
 import 'package:take_health/features/NutritionPage/presentation/screen/NutritionPage.dart';
 import 'package:take_health/features/ReportsPage/presentation/screen/ReportsPage.dart';
-import 'package:take_health/features/profile/presentation/screen/profile_page.dart';
+import 'package:take_health/features/ai_chat/presentation/screen/ai_chat_page.dart';
+import 'package:take_health/features/Profile/presentation/bloc/profile_bloc.dart';
+import 'package:take_health/features/Profile/presentation/bloc/profile_state.dart';
+import 'package:take_health/features/Profile/presentation/screen/profile_page.dart';
 import '../../Auth/bloc/auth_bloc.dart';
 import 'home_page.dart';
 
@@ -57,60 +60,75 @@ class _MainScreenState extends State<MainScreen> {
         children: _pages,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add meal/nutrition logging
-        },
-        child: const Icon(Icons.add),
+        onPressed: () => Navigator.push(context, AiChatPage.route()),
+        tooltip: 'AI Health Coach',
+        child: const Icon(Icons.chat_bubble_outline_rounded),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: _buildBottomNavigationBar(cs),
     );
   }
 
+  String _greeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return 'Good morning';
+    if (hour < 17) return 'Good afternoon';
+    return 'Good evening';
+  }
+
   PreferredSizeWidget _buildCommonAppBar(ColorScheme cs) {
     if (_currentIndex == 1) return _buildNutritionAppBar(cs);
     return AppBar(
-      title: Row(
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ProfilePage()),
-            ),
-            child: CircleAvatar(
-              backgroundColor: cs.primary,
-              child: Text(
-                'P',
-                style: TextStyle(
-                  color: cs.onPrimary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      title: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (_, state) {
+          final name = state is ProfileLoaded
+              ? state.profile.name
+              : '';
+          final letter = name.isNotEmpty ? name[0].toUpperCase() : 'U';
+          final greeting = _greeting();
+          return Row(
             children: [
-              Text(
-                'Hello patil!',
-                style: TextStyle(
-                  color: cs.onSurface,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProfilePage()),
+                ),
+                child: CircleAvatar(
+                  backgroundColor: cs.primary,
+                  child: Text(
+                    letter,
+                    style: TextStyle(
+                      color: cs.onPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-              Text(
-                'Good morning',
-                style: TextStyle(
-                  color: cs.primary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name.isNotEmpty ? 'Hello $name!' : 'Hello!',
+                    style: TextStyle(
+                      color: cs.onSurface,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    greeting,
+                    style: TextStyle(
+                      color: cs.primary,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
       actions: [
         IconButton(

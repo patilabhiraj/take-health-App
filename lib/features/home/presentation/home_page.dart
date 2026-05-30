@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:take_health/features/Ai_chat/ai_chat_page.dart';
+import 'package:take_health/features/ai_chat/presentation/screen/ai_chat_page.dart';
 import 'widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,9 +22,7 @@ class HomePage extends StatelessWidget {
         children: [
           /// AI SEARCH BAR
           AiSearchBar(
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const AiChatPage()),
-            ),
+            onTap: () => Navigator.of(context).push(AiChatPage.route()),
             hintText: "What should I eat for dinner?",
           ),
 

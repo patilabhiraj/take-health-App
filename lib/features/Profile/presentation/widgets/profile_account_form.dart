@@ -32,9 +32,11 @@ class ProfileAccountForm extends StatelessWidget {
   final ValueChanged<String?> onCountryChanged;
 
   final VoidCallback onSave;
+  final bool isSaving;
 
   const ProfileAccountForm({
     super.key,
+    this.isSaving = false,
     required this.nameController,
     required this.emailController,
     required this.phoneController,
@@ -170,23 +172,33 @@ class ProfileAccountForm extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: onSave,
+            onPressed: isSaving ? null : onSave,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF1A2332),
               foregroundColor: Colors.white,
+              disabledBackgroundColor: const Color(0xFF1A2332).withValues(alpha: 0.6),
               padding: const EdgeInsets.symmetric(vertical: 16),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14)),
               elevation: 0,
             ),
-            child: const Text(
-              'SAVE CHANGES',
-              style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.5,
-              ),
-            ),
+            child: isSaving
+                ? const SizedBox(
+                    height: 18,
+                    width: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Text(
+                    'SAVE CHANGES',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
           ),
         ),
       ],

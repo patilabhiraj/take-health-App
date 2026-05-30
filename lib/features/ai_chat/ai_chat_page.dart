@@ -413,6 +413,7 @@ class _AiChatPageState extends State<AiChatPage> {
                       _sessions.clear();
                     });
 
+                    if (!mounted) return;
                     Navigator.pop(context);
 
                     _createNewSession();
@@ -785,7 +786,7 @@ class _TypingIndicatorState extends State<_TypingIndicator>
 
         AnimatedBuilder(
           animation: _ctrl,
-          builder: (_, __) {
+          builder: (context, _) {
             return const Text("AI is typing...");
           },
         ),

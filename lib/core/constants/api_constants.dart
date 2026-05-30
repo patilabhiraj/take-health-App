@@ -16,8 +16,12 @@ abstract final class ApiConstants {
   static const String updateProfile    = '/api/auth/profile';
   static const String uploadProfilePic = '/api/auth/upload-profile-picture';
 
+  // ── AI Chat ───────────────────────────────────────────────────────────────────
+  static const String chat             = '/chat';
+  static const String chatHistory      = '/chat/history';
+  static const String aiHealthChat     = '/health/ai-chat';
+
   // ── Health Features (Future) ──────────────────────────────────────────────────
-  static const String aiChat           = '/api/ai/chat';
   static const String analysis         = '/api/analysis';
   static const String reports          = '/api/reports';
   static const String dietPlan         = '/api/diet-plan';

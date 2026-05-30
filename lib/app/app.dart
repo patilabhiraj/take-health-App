@@ -6,6 +6,8 @@ import '../core/utils/app_logger.dart';
 import '../features/Auth/bloc/auth_bloc.dart';
 import '../features/Auth/bloc/splash_bloc.dart';
 import '../features/Auth/bloc/forgot_password_bloc.dart';
+import '../features/Profile/presentation/bloc/profile_bloc.dart';
+import '../features/Profile/presentation/bloc/profile_event.dart';
 import 'injection.dart';
 import 'routes/router.dart';
 
@@ -20,6 +22,9 @@ class App extends StatelessWidget {
         BlocProvider(create: (_) => sl<AuthBloc>()),
         BlocProvider(create: (_) => sl<ForgotPasswordBloc>()),
         BlocProvider.value(value: sl<ThemeCubit>()),
+        BlocProvider(
+          create: (_) => sl<ProfileBloc>()..add(ProfileLoadRequested()),
+        ),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {

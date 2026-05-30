@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ProfileHeader extends StatelessWidget {
   final String name;
   final String email;
+  final String? profilePicture;
   final String? avatarLetter;
   final String? age;
   final String? gender;
@@ -13,6 +14,7 @@ class ProfileHeader extends StatelessWidget {
     super.key,
     required this.name,
     required this.email,
+    this.profilePicture,
     this.avatarLetter,
     this.age,
     this.gender,
@@ -23,15 +25,15 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-
-    final displayLetter =
+    final letter =
         avatarLetter ?? (name.isNotEmpty ? name[0].toUpperCase() : 'U');
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _Avatar(
-          letter: displayLetter,
+          letter: letter,
+          imageUrl: profilePicture,
           cs: cs,
           scaffoldBg: Theme.of(context).scaffoldBackgroundColor,
           onCameraTap: onCameraTab,
@@ -42,7 +44,7 @@ class ProfileHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                name,
+                name.isNotEmpty ? name : '—',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -63,7 +65,7 @@ class ProfileHeader extends StatelessWidget {
                 const SizedBox(width: 5),
                 Flexible(
                   child: Text(
-                    email,
+                    email.isNotEmpty ? email : '—',
                     style: TextStyle(
                         fontSize: 12, color: cs.onSurfaceVariant),
                     overflow: TextOverflow.ellipsis,
@@ -80,6 +82,7 @@ class ProfileHeader extends StatelessWidget {
 
 class _Avatar extends StatelessWidget {
   final String letter;
+  final String? imageUrl;
   final ColorScheme cs;
   final Color scaffoldBg;
   final VoidCallback? onCameraTap;
@@ -88,24 +91,34 @@ class _Avatar extends StatelessWidget {
     required this.letter,
     required this.cs,
     required this.scaffoldBg,
+    this.imageUrl,
     this.onCameraTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final hasImage = imageUrl != null && imageUrl!.isNotEmpty;
+
     return Stack(
       children: [
         CircleAvatar(
           radius: 38,
           backgroundColor: cs.surfaceContainerHighest,
-          child: Text(
-            letter,
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-              color: cs.onSurfaceVariant,
-            ),
-          ),
+          backgroundImage:
+              hasImage ? NetworkImage(imageUrl!) : null,
+          onBackgroundImageError: hasImage
+              ? (error, _) {}
+              : null,
+          child: hasImage
+              ? null
+              : Text(
+                  letter,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: cs.onSurfaceVariant,
+                  ),
+                ),
         ),
         Positioned(
           bottom: 2,
@@ -146,7 +159,6 @@ class _StatsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = TextStyle(fontSize: 12, color: cs.onSurfaceVariant);
     final dot = Text(' · ', style: style);
-
     return Wrap(
       children: [
         Text(age, style: style),
